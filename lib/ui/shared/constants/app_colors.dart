@@ -72,4 +72,6 @@ class AppColors {
   static const darkSurfaceAt3 = Color(0x47ffffff);
   static const darkSurfaceAt4 = Color(0x5bffffff);
   static const darkSurfaceAt5 = Color(0x84ffffff);
+
+  static const yellow = Color(0xFFFFC629);
 }

@@ -7,7 +7,7 @@ class AppButton extends StatelessWidget {
   final String label;
   final VoidCallback? onTap;
   final VoidCallback? onLongPress;
-  final Color? labelColor, borderColor, disabledColor;
+  final Color? labelColor, borderColor, buttonColor, disabledColor;
   final double? width, height, borderRadius;
   final bool isCollapsed, isDisabled;
   final bool hasShadow, hasBorder, isBusy, showFeedback;
@@ -25,6 +25,7 @@ class AppButton extends StatelessWidget {
     this.labelColor,
     this.disabledColor,
     this.borderColor,
+    this.buttonColor,
     this.isCollapsed = false,
     this.hasShadow = false,
     this.hasBorder = false,
@@ -46,7 +47,8 @@ class AppButton extends StatelessWidget {
         onPressed: isDisabled ? null : () => isBusy ? null : onTap?.call(),
         onLongPress:
             isDisabled ? null : () => isBusy ? null : onLongPress?.call(),
-        color: context.cScheme.secondaryContainer.withOpacity(.16),
+        color:
+            buttonColor ?? context.cScheme.secondaryContainer.withOpacity(.16),
         elevation: hasShadow ? 5 : 0,
         clipBehavior: Clip.hardEdge,
         highlightElevation: showFeedback ? 4 : 0,
@@ -75,7 +77,8 @@ class AppButton extends StatelessWidget {
                       label,
                       textAlign: TextAlign.center,
                       style: context.tTheme.labelLarge?.copyWith(
-                        color: context.cScheme.onSecondaryContainer,
+                        color:
+                            labelColor ?? context.cScheme.onSecondaryContainer,
                       ),
                     ),
                   ),
