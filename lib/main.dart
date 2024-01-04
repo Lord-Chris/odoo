@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'ui/shared/constants/_constants.dart';
-import 'ui/views/splash/splash_view.dart';
+import 'ui/views/home/home_view.dart';
 
 void main() {
   runApp(const MyApp());
@@ -21,7 +21,7 @@ class MyApp extends StatelessWidget {
           title: AppConstants.appName,
           theme: AppTheme.lightTheme,
           // darkTheme: AppTheme.darkTheme,
-          home: const SplashView(),
+          home: const HomeView(),
         );
       },
     );

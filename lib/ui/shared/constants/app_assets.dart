@@ -2,7 +2,7 @@ class AppSvgAssets {
   static const _prefix = 'assets/svgs';
 
   static const odooLogo = '$_prefix/odoo_logo.svg';
-  // static const raydaText = '$_prefix/rayda_text.svg';
+  static const add = '$_prefix/add.svg';
   // static const noInternet = '$_prefix/no_internet.svg';
   // static const success = '$_prefix/success_icon.svg';
   // static const deviceLocked = '$_prefix/device_locked.svg';
