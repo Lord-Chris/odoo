@@ -9,8 +9,9 @@ class AppSvgAssets {
   static const clock = '$_prefix/clock.svg';
   static const pause = '$_prefix/pause.svg';
   static const arrowDown = '$_prefix/arrow_down.svg';
-  // static const raydaText = '$_prefix/rayda_text.svg';
-  // static const raydaText = '$_prefix/rayda_text.svg';
+  static const check = '$_prefix/check.svg';
+  static const pencil = '$_prefix/pencil.svg';
+  static const stop = '$_prefix/stop.svg';
   // static const raydaText = '$_prefix/rayda_text.svg';
 }
 

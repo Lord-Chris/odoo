@@ -35,6 +35,7 @@ dependencies:
   flutter_hooks: ^0.20.4
   flutter_screenutil: ^5.9.0
   flutter_svg: ^2.0.9
+  readmore: ^2.2.0
 
 dev_dependencies:
   flutter_lints: ^2.0.0

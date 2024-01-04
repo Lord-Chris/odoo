@@ -3,14 +3,9 @@ import 'package:flutter/material.dart';
 import '_constants.dart';
 
 class AppTheme {
-  static ThemeData get lightTheme =>
-      _theme.copyWith(colorScheme: _lightColorScheme);
-
-  static ThemeData get darkTheme =>
-      _theme.copyWith(colorScheme: _darkColorScheme);
-
   static final _theme = ThemeData(
     useMaterial3: true,
+    primaryColorLight: AppColors.lightPrimary,
     textTheme: const TextTheme(
       displayLarge: AppTextStyles.displayLarge,
       displayMedium: AppTextStyles.displayMedium,
@@ -29,6 +24,11 @@ class AppTheme {
       bodySmall: AppTextStyles.bodySmall,
     ),
   );
+  static ThemeData get lightTheme =>
+      _theme.copyWith(colorScheme: _lightColorScheme);
+
+  static ThemeData get darkTheme =>
+      _theme.copyWith(colorScheme: _darkColorScheme);
 
   static final _lightColorScheme = ColorScheme(
     primary: AppColors.lightPrimary,

@@ -5,6 +5,7 @@ import '../../../core/extensions/context_extenstion.dart';
 import '../../shared/components/_components.dart';
 import '../../shared/constants/app_colors.dart';
 import '../../shared/constants/spacing.dart';
+import '../timer_details/timer_details_view.dart';
 
 class CreateTimerView extends StatelessWidget {
   const CreateTimerView({super.key});
@@ -73,7 +74,15 @@ class CreateTimerView extends StatelessWidget {
                       ],
                     ),
                   ),
-                  const AppButton(label: 'Create Timer'),
+                  AppButton(
+                    label: 'Create Timer',
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (_) => const TimerDetailsView()));
+                    },
+                  ),
                 ],
               ),
             ),
