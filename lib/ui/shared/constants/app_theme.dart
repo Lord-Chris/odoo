@@ -3,8 +3,12 @@ import 'package:flutter/material.dart';
 import '_constants.dart';
 
 class AppTheme {
-  static get lightTheme => _theme.copyWith(colorScheme: _lightColorScheme);
-  static get darkTheme => _theme.copyWith(colorScheme: _darkColorScheme);
+  static ThemeData get lightTheme =>
+      _theme.copyWith(colorScheme: _lightColorScheme);
+
+  static ThemeData get darkTheme =>
+      _theme.copyWith(colorScheme: _darkColorScheme);
+
   static final _theme = ThemeData(
     useMaterial3: true,
     textTheme: const TextTheme(
@@ -44,7 +48,7 @@ class AppTheme {
     surfaceVariant: AppColors.lightSurfaceVariant,
     onSurfaceVariant: AppColors.lightOnSurfaceVariant,
     background: AppColors.lightSurface.colors.first,
-    scrim: AppColors.lightSurface.colors.first,
+    scrim: AppColors.lightSurface.colors.last,
     onBackground: AppColors.lightOnPrimaryContainer,
     error: AppColors.lightError,
     onError: AppColors.lightOnError,
@@ -73,7 +77,7 @@ class AppTheme {
     surfaceVariant: AppColors.darkSurfaceVariant,
     onSurfaceVariant: AppColors.darkOnSurfaceVariant,
     background: AppColors.darkSurface.colors.first,
-    scrim: AppColors.darkSurface.colors.first,
+    scrim: AppColors.darkSurface.colors.last,
     onBackground: AppColors.darkOnPrimaryContainer,
     error: AppColors.darkError,
     onError: AppColors.darkOnError,
