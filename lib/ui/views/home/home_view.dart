@@ -6,6 +6,7 @@ import 'package:flutter_svg/svg.dart';
 import '../../../core/_core.dart';
 import '../../shared/components/_components.dart';
 import '../../shared/constants/_constants.dart';
+import '../create_timer/create_timer_view.dart';
 
 class HomeView extends HookWidget {
   const HomeView({super.key});
@@ -200,7 +201,10 @@ class HomeHeader extends StatelessWidget {
           ),
         ),
         IconButton.filled(
-          onPressed: () {},
+          onPressed: () {
+            Navigator.push(context,
+                MaterialPageRoute(builder: (_) => const CreateTimerView()));
+          },
           iconSize: 48.r,
           padding: REdgeInsets.all(3),
           style: IconButton.styleFrom(
