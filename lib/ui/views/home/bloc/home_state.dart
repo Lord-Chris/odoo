@@ -1,12 +1,14 @@
 import 'dart:convert';
 
-import '../../../../models/time_sheet_model.dart';
+import '../../../../models/_models.dart';
 
 class HomeState {
   final List<TimeSheetModel> timers;
+  final Failure? error;
 
   const HomeState({
     this.timers = const [],
+    this.error,
   });
 
   int get timerCount => timers.length;
@@ -14,6 +16,7 @@ class HomeState {
   Map<String, dynamic> toMap() {
     return {
       'timers': timers.map((x) => x.toMap()).toList(),
+      'error': error?.toMap(),
     };
   }
 
@@ -21,6 +24,7 @@ class HomeState {
     return HomeState(
       timers: List<TimeSheetModel>.from(
           map['timers']?.map((x) => TimeSheetModel.fromMap(x))),
+      error: map['error'] != null ? Failure.fromMap(map['error']) : null,
     );
   }
 
@@ -34,6 +38,14 @@ class HomeState {
   }) {
     return HomeState(
       timers: timers ?? this.timers,
+      error: null,
+    );
+  }
+
+  HomeState updateError(Failure? error) {
+    return HomeState(
+      timers: timers,
+      error: error,
     );
   }
 }

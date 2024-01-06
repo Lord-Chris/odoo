@@ -1,25 +1,23 @@
 import 'dart:convert';
 
-import 'package:equatable/equatable.dart';
 import 'package:uuid/uuid.dart';
 
-import '../../../../models/time_sheet_model.dart';
+import '../../../../models/_models.dart';
 
-class CreateTimerState extends Equatable {
+class CreateTimerState {
   final String? project;
   final String? task;
   final String description;
   final bool isFav;
+  final Failure? error;
 
   const CreateTimerState({
     this.project,
     this.task,
     this.description = '',
     this.isFav = false,
+    this.error,
   });
-
-  @override
-  List<Object?> get props => [project, task, description, isFav];
 
   CreateTimerState copyWith({
     String? project,
@@ -35,12 +33,23 @@ class CreateTimerState extends Equatable {
     );
   }
 
+  CreateTimerState updateError(Failure? error) {
+    return CreateTimerState(
+      project: project,
+      task: task,
+      description: description,
+      isFav: isFav,
+      error: error,
+    );
+  }
+
   Map<String, dynamic> toMap() {
     return {
       'project': project,
       'task': task,
       'description': description,
       'is_fav': isFav,
+      'error': error?.toMap(),
     };
   }
 
@@ -50,6 +59,7 @@ class CreateTimerState extends Equatable {
       task: map['task'],
       description: map['description'] ?? '',
       isFav: map['is_fav'] ?? false,
+      error: map['error'] != null ? Failure.fromMap(map['error']) : null,
     );
   }
 

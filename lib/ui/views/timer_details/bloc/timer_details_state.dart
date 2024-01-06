@@ -1,9 +1,10 @@
-import '../../../../models/time_sheet_model.dart';
+import '../../../../models/_models.dart';
 
 class TimerDetailsState {
   final TimeSheetModel timeSheet;
+  final Failure? error;
 
-  const TimerDetailsState(this.timeSheet);
+  const TimerDetailsState(this.timeSheet, [this.error]);
 
   TimerDetailsState copyWith({
     TimeSheetModel? timeSheet,
@@ -11,5 +12,9 @@ class TimerDetailsState {
     return TimerDetailsState(
       timeSheet ?? this.timeSheet,
     );
+  }
+
+  TimerDetailsState updateError(Failure? error) {
+    return TimerDetailsState(timeSheet, error);
   }
 }

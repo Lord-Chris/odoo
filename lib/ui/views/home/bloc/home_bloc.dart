@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:logger/logger.dart';
 
-import '../../../../models/time_sheet_model.dart';
+import '../../../../models/_models.dart';
 import 'home_event.dart';
 import 'home_state.dart';
 
@@ -30,17 +30,33 @@ class HomeBloc extends HydratedBloc<HomeEvent, HomeState> {
 
   FutureOr<void> _onAddTimeSheetEvent(
       AddTimeSheetEvent event, Emitter<HomeState> emit) {
-    final timers = state.timers;
-    timers.add(event.timer);
-    emit(state.copyWith(timers: timers));
+    try {
+      final timers = state.timers;
+      timers.add(event.timer);
+      emit(state.copyWith(timers: timers));
+    } catch (e) {
+      _log.e(e);
+      emit(state.updateError(
+        const Failure(
+            message: 'Something went wrong. Please contact developer!'),
+      ));
+    }
   }
 
   FutureOr<void> _onUpdateTimeSheetEvent(
       UpdateTimeSheetEvent event, Emitter<HomeState> emit) {
-    final timers = state.timers;
-    final index = timers.indexWhere((timer) => timer.id == event.timer.id);
-    timers[index] = event.timer;
-    emit(state.copyWith(timers: timers));
+    try {
+      final timers = state.timers;
+      final index = timers.indexWhere((timer) => timer.id == event.timer.id);
+      timers[index] = event.timer;
+      emit(state.copyWith(timers: timers));
+    } catch (e) {
+      _log.e(e);
+      emit(state.updateError(
+        const Failure(
+            message: 'Something went wrong. Please contact developer!'),
+      ));
+    }
   }
 
   FutureOr<void> _onStartTimerEvent(
@@ -53,6 +69,10 @@ class HomeBloc extends HydratedBloc<HomeEvent, HomeState> {
       emit(state.copyWith(timers: timers));
     } catch (e) {
       _log.e(e);
+      emit(state.updateError(
+        const Failure(
+            message: 'Something went wrong. Please contact developer!'),
+      ));
     }
   }
 
@@ -69,21 +89,33 @@ class HomeBloc extends HydratedBloc<HomeEvent, HomeState> {
       emit(state.copyWith(timers: timers));
     } catch (e) {
       _log.e(e);
+      emit(state.updateError(
+        const Failure(
+            message: 'Something went wrong. Please contact developer!'),
+      ));
     }
   }
 
   FutureOr<void> _onUpdateTimeEvent(
       UpdateTimeEvent event, Emitter<HomeState> emit) async {
-    final timeSheets = state.timers;
-    var timeSheet = timeSheets[event.timesheetIndex];
-    if (timeSheet.time.isNegative || timeSheet.time.inSeconds == 0) {
-      timeSheet = timeSheet.copyWith(time: Duration.zero);
-    } else if (!timeSheet.isPaused) {
-      timeSheet = timeSheet.copyWith(
-        time: Duration(seconds: timeSheet.time.inSeconds - 1),
-      );
+    try {
+      final timeSheets = state.timers;
+      var timeSheet = timeSheets[event.timesheetIndex];
+      if (timeSheet.time.isNegative || timeSheet.time.inSeconds == 0) {
+        timeSheet = timeSheet.copyWith(time: Duration.zero, isPaused: true);
+      } else if (!timeSheet.isPaused) {
+        timeSheet = timeSheet.copyWith(
+          time: Duration(seconds: timeSheet.time.inSeconds - 1),
+        );
+      }
+      timeSheets[event.timesheetIndex] = timeSheet;
+      emit(state.copyWith(timers: timeSheets));
+    } catch (e) {
+      _log.e(e);
+      emit(state.updateError(
+        const Failure(
+            message: 'Something went wrong. Please contact developer!'),
+      ));
     }
-    timeSheets[event.timesheetIndex] = timeSheet;
-    emit(state.copyWith(timers: timeSheets));
   }
 }

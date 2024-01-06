@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 
-import '../../../../models/time_sheet_model.dart';
+import '../../../../models/_models.dart';
 import 'timer_details_event.dart';
 import 'timer_details_state.dart';
 
@@ -29,11 +29,18 @@ class TimerDetailsBloc extends Bloc<TimerDetailsEvent, TimerDetailsState> {
 
   FutureOr<void> _onPausePlayTapEvent(
       PausePlayTapEvent event, Emitter<TimerDetailsState> emit) {
-    var timeSheet = state.timeSheet;
-    timeSheet = timeSheet.copyWith(isPaused: !timeSheet.isPaused);
-    emit(state.copyWith(timeSheet: timeSheet));
+    try {
+      var timeSheet = state.timeSheet;
+      timeSheet = timeSheet.copyWith(isPaused: !timeSheet.isPaused);
+      emit(state.copyWith(timeSheet: timeSheet));
 
-    _startTImerListener(timeSheet);
+      _startTImerListener(timeSheet);
+    } catch (e) {
+      emit(state.updateError(
+        const Failure(
+            message: 'Something went wrong. Please contact developer!'),
+      ));
+    }
   }
 
   FutureOr<void> _onStopTapEvent(
@@ -51,15 +58,22 @@ class TimerDetailsBloc extends Bloc<TimerDetailsEvent, TimerDetailsState> {
 
   FutureOr<void> _onUpdateTimeEvent(
       UpdateTimeEvent event, Emitter<TimerDetailsState> emit) async {
-    var timeSheet = state.timeSheet;
-    if (timeSheet.time.isNegative || timeSheet.time.inSeconds == 0) {
-      timeSheet = timeSheet.copyWith(time: Duration.zero);
-      _timer?.cancel();
-    } else if (!timeSheet.isPaused) {
-      timeSheet = timeSheet.copyWith(
-        time: Duration(seconds: timeSheet.time.inSeconds - 1),
-      );
+    try {
+      var timeSheet = state.timeSheet;
+      if (timeSheet.time.isNegative || timeSheet.time.inSeconds == 0) {
+        timeSheet = timeSheet.copyWith(time: Duration.zero);
+        _timer?.cancel();
+      } else if (!timeSheet.isPaused) {
+        timeSheet = timeSheet.copyWith(
+          time: Duration(seconds: timeSheet.time.inSeconds - 1),
+        );
+      }
+      emit(state.copyWith(timeSheet: timeSheet));
+    } catch (e) {
+      emit(state.updateError(
+        const Failure(
+            message: 'Something went wrong. Please contact developer!'),
+      ));
     }
-    emit(state.copyWith(timeSheet: timeSheet));
   }
 }
