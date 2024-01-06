@@ -1,7 +1,7 @@
 class AppSvgAssets {
   static const _prefix = 'assets/svgs';
 
-  static const odooLogo = '$_prefix/odoo_logo.svg';
+  static const noTimesheet = '$_prefix/no_timesheet.svg';
   static const add = '$_prefix/add.svg';
   static const starFilled = '$_prefix/star_filled.svg';
   static const starEmpty = '$_prefix/star_empty.svg';
@@ -13,4 +13,11 @@ class AppSvgAssets {
   static const check = '$_prefix/check.svg';
   static const pencil = '$_prefix/pencil.svg';
   static const stop = '$_prefix/stop.svg';
+  // static const raydaText = '$_prefix/rayda_text.svg';
+}
+
+class AppImgAssets {
+  static const _prefix = 'assets/images';
+
+  static const odooLogo = '$_prefix/odoo_logo.png';
 }

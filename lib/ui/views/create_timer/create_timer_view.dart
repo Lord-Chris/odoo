@@ -88,10 +88,10 @@ class CreateTimerView extends StatelessWidget {
                       AppButton(
                         label: 'Create Timer',
                         onTap: () {
+                          Navigator.pop(context);
                           context
                               .read<HomeBloc>()
                               .add(AddTimeSheetEvent(state.toTimerModel()));
-                          Navigator.pop(context);
                         },
                       ),
                     ],

@@ -93,7 +93,7 @@ class CurrentRecord extends StatelessWidget {
             children: [
               Expanded(
                 child: Text(
-                  state.timeSheet.time.parsed,
+                  state.timeSheet.time.parsedWithHr,
                   style: context.tTheme.displaySmall?.copyWith(
                     color: context.cScheme.onSurface,
                   ),

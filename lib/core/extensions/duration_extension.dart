@@ -3,6 +3,13 @@ extension DateTimeExtension on Duration {
     final diff = inSeconds;
     final sec = (diff % 60).floor().toString().padLeft(2, '0');
     final min = ((diff / 60) % 60).floor().toString().padLeft(2, '0');
+    return '$min:$sec';
+  }
+
+  String get parsedWithHr {
+    final diff = inSeconds;
+    final sec = (diff % 60).floor().toString().padLeft(2, '0');
+    final min = ((diff / 60) % 60).floor().toString().padLeft(2, '0');
     final hr = (diff / (60 * 60)).floor().toString().padLeft(2, '0');
     return '$hr:$min:$sec';
   }

@@ -7,7 +7,7 @@ import 'package:path_provider/path_provider.dart';
 
 import 'ui/shared/constants/_constants.dart';
 import 'ui/views/home/bloc/home_bloc.dart';
-import 'ui/views/home/home_view.dart';
+import 'ui/views/splash/splash_view.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -33,7 +33,7 @@ class MyApp extends StatelessWidget {
           child: MaterialApp(
             title: AppConstants.appName,
             theme: AppTheme.lightTheme,
-            home: const HomeView(),
+            home: const SplashView(),
             builder: (context, child) {
               BlocProvider.of<HomeBloc>(context);
               return child!;

@@ -53,7 +53,7 @@ class HomeView extends HookWidget {
                         children: [
                           const Expanded(
                             child: EmptyStateWidget(
-                              imagePath: AppSvgAssets.odooLogo,
+                              imagePath: AppSvgAssets.noTimesheet,
                               title: 'You don’t have any odoo timesheets',
                               subtitle: 'Synchronize with odoo to get started',
                             ),
