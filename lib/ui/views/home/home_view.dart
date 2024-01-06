@@ -60,11 +60,12 @@ class HomeView extends HookWidget {
                 const Divider(height: 1),
                 Expanded(
                   child: BlocBuilder<HomeBloc, HomeState>(
+                    buildWhen: (prev, cur) => prev.timerCount != cur.timerCount,
                     builder: (context, state) {
                       if (state.timers.isEmpty) {
                         return const NonFilledStateWidget();
                       }
-                      return const FilledStateWidget();
+                      return FilledStateWidget(timerCount: state.timerCount);
                     },
                   ),
                 ),
@@ -78,19 +79,20 @@ class HomeView extends HookWidget {
 }
 
 class FilledStateWidget extends StatelessWidget {
+  final int timerCount;
   const FilledStateWidget({
-    super.key,
-  });
+    Key? key,
+    required this.timerCount,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final state = context.watch<HomeBloc>().state;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Spacing.vertSmall(),
         Text(
-          'You have ${state.timerCount} Timer${state.timerCount == 1 ? '' : 's'}',
+          'You have $timerCount Timer${timerCount == 1 ? '' : 's'}',
           style: context.tTheme.labelLarge?.copyWith(
             color: context.cScheme.onSurface,
           ),
@@ -98,7 +100,7 @@ class FilledStateWidget extends StatelessWidget {
         Expanded(
           child: ListView.builder(
             padding: REdgeInsets.symmetric(vertical: 16),
-            itemCount: state.timers.length,
+            itemCount: timerCount,
             itemBuilder: (context, index) {
               return TimeSheetWidget(index: index);
             },

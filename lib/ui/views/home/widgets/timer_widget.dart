@@ -152,7 +152,7 @@ class TimeButton extends HookWidget {
         colorFilter: ColorFilter.mode(
           timesheet.isPaused
               ? context.cScheme.primaryContainer
-              : context.cScheme.onPrimary,
+              : context.cScheme.surface,
           BlendMode.srcIn,
         ),
       ),
