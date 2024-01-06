@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:equatable/equatable.dart';
 
 class TimeSheetModel extends Equatable {
+  final String id;
   final String project;
   final String task;
   final String description;
@@ -13,6 +14,7 @@ class TimeSheetModel extends Equatable {
   final bool isPaused;
 
   const TimeSheetModel({
+    required this.id,
     required this.project,
     required this.task,
     required this.description,
@@ -24,6 +26,7 @@ class TimeSheetModel extends Equatable {
   });
 
   TimeSheetModel copyWith({
+    String? id,
     String? project,
     String? task,
     String? description,
@@ -34,6 +37,7 @@ class TimeSheetModel extends Equatable {
     bool? isPaused,
   }) {
     return TimeSheetModel(
+      id: id ?? this.id,
       project: project ?? this.project,
       task: task ?? this.task,
       description: description ?? this.description,
@@ -59,6 +63,7 @@ class TimeSheetModel extends Equatable {
 
   Map<String, dynamic> toMap() {
     return {
+      'id': id,
       'project': project,
       'task': task,
       'description': description,
@@ -72,6 +77,7 @@ class TimeSheetModel extends Equatable {
 
   factory TimeSheetModel.fromMap(Map<String, dynamic> map) {
     return TimeSheetModel(
+      id: map['id'],
       project: map['project'] ?? '',
       task: map['task'] ?? '',
       description: map['description'] ?? '',

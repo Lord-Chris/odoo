@@ -13,11 +13,4 @@ class AppSvgAssets {
   static const check = '$_prefix/check.svg';
   static const pencil = '$_prefix/pencil.svg';
   static const stop = '$_prefix/stop.svg';
-  // static const raydaText = '$_prefix/rayda_text.svg';
-}
-
-class AppImgAssets {
-  static const _prefix = 'assets/images';
-
-  // static const locationAlways = '$_prefix/location_always.png';
 }

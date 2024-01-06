@@ -2,9 +2,14 @@ import '../../../../models/time_sheet_model.dart';
 
 abstract class HomeEvent {}
 
-class AddTimerEvent extends HomeEvent {
+class AddTimeSheetEvent extends HomeEvent {
   final TimeSheetModel timer;
-  AddTimerEvent(this.timer);
+  AddTimeSheetEvent(this.timer);
+}
+
+class UpdateTimeSheetEvent extends HomeEvent {
+  final TimeSheetModel timer;
+  UpdateTimeSheetEvent(this.timer);
 }
 
 class StartTimerEvent extends HomeEvent {

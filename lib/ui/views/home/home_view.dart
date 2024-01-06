@@ -6,6 +6,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../core/_core.dart';
 import '../../shared/components/_components.dart';
 import '../../shared/constants/_constants.dart';
+import '../create_timer/bloc/create_timer_bloc.dart';
 import '../create_timer/create_timer_view.dart';
 import 'bloc/home_bloc.dart';
 import 'bloc/home_state.dart';
@@ -29,7 +30,7 @@ class HomeView extends HookWidget {
                 controller: controller,
                 dividerHeight: 2,
                 indicatorSize: TabBarIndicatorSize.tab,
-                indicatorPadding: REdgeInsets.symmetric(horizontal: .4.sw),
+                indicatorPadding: REdgeInsets.symmetric(horizontal: .35.sw),
                 labelStyle: context.tTheme.labelLarge?.copyWith(
                   color: context.cScheme.onSurface,
                 ),
@@ -63,7 +64,11 @@ class HomeView extends HookWidget {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (_) => const CreateTimerView()),
+                                  builder: (_) => BlocProvider(
+                                    create: (_) => CreateTimerBloc(),
+                                    child: const CreateTimerView(),
+                                  ),
+                                ),
                               );
                             },
                           ),

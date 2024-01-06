@@ -90,7 +90,7 @@ class CreateTimerView extends StatelessWidget {
                         onTap: () {
                           context
                               .read<HomeBloc>()
-                              .add(AddTimerEvent(state.toTimerModel()));
+                              .add(AddTimeSheetEvent(state.toTimerModel()));
                           Navigator.pop(context);
                         },
                       ),

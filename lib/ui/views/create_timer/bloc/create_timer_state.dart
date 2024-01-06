@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:equatable/equatable.dart';
+import 'package:uuid/uuid.dart';
 
 import '../../../../models/time_sheet_model.dart';
 
@@ -59,6 +60,7 @@ class CreateTimerState extends Equatable {
 
   TimeSheetModel toTimerModel() {
     return TimeSheetModel(
+      id: const Uuid().v4(),
       project: project ?? '',
       description: description,
       task: task ?? '',

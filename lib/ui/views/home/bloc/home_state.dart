@@ -11,11 +11,6 @@ class HomeState {
 
   int get timerCount => timers.length;
 
-// Issue comes from here
-// Let's get the why and then fix it
-  // @override
-  // List<Object> get props => [timers];
-
   Map<String, dynamic> toMap() {
     return {
       'timers': timers.map((x) => x.toMap()).toList(),

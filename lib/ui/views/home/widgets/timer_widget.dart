@@ -10,6 +10,8 @@ import 'package:intl/intl.dart';
 import '../../../../core/_core.dart';
 import '../../../shared/components/_components.dart';
 import '../../../shared/constants/_constants.dart';
+import '../../timer_details/bloc/timer_details_bloc.dart';
+import '../../timer_details/timer_details_view.dart';
 import '../bloc/home_bloc.dart';
 import '../bloc/home_event.dart';
 
@@ -24,15 +26,15 @@ class TimerWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final timer = context.watch<HomeBloc>().state.timers[index];
     return InkWell(
-      // onTap: () => Navigator.push(
-      //   context,
-      //   MaterialPageRoute(
-      //     builder: (_) => BlocProvider(
-      //       create: (_) => CreateTimerBloc(),
-      //       child: const CreateTimerView(),
-      //     ),
-      //   ),
-      // ),
+      onTap: () => Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (_) => TimerDetailsBloc(timer),
+            child: const TimerDetailsView(),
+          ),
+        ),
+      ),
       child: Container(
         width: 361.w,
         height: 112.h,

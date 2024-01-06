@@ -9,18 +9,13 @@ import 'home_state.dart';
 
 class HomeBloc extends HydratedBloc<HomeEvent, HomeState> {
   HomeBloc() : super(const HomeState()) {
-    on<AddTimerEvent>(_onAddTimerEvent);
+    on<AddTimeSheetEvent>(_onAddTimeSheetEvent);
+    on<UpdateTimeSheetEvent>(_onUpdateTimeSheetEvent);
     on<StartTimerEvent>(_onStartTimerEvent);
     on<EndTimerEvent>(_onEndTimerEvent);
   }
 
   final _log = Logger();
-
-  @override
-  void onChange(Change<HomeState> change) {
-    super.onChange(change);
-    print(state);
-  }
 
   @override
   HomeState? fromJson(Map<String, dynamic> json) {
@@ -32,10 +27,18 @@ class HomeBloc extends HydratedBloc<HomeEvent, HomeState> {
     return state.toMap();
   }
 
-  FutureOr<void> _onAddTimerEvent(
-      AddTimerEvent event, Emitter<HomeState> emit) {
+  FutureOr<void> _onAddTimeSheetEvent(
+      AddTimeSheetEvent event, Emitter<HomeState> emit) {
     final timers = state.timers;
     timers.add(event.timer);
+    emit(state.copyWith(timers: timers));
+  }
+
+  FutureOr<void> _onUpdateTimeSheetEvent(
+      UpdateTimeSheetEvent event, Emitter<HomeState> emit) {
+    final timers = state.timers;
+    final index = timers.indexWhere((timer) => timer.id == event.timer.id);
+    timers[index] = event.timer;
     emit(state.copyWith(timers: timers));
   }
 
@@ -63,8 +66,7 @@ class HomeBloc extends HydratedBloc<HomeEvent, HomeState> {
         time: event.duration,
       );
       emit(state.copyWith(timers: timers));
-    } catch (e, s) {
-      _log.e(s);
+    } catch (e) {
       _log.e(e);
     }
   }

@@ -33,10 +33,11 @@ class MyApp extends StatelessWidget {
           child: MaterialApp(
             title: AppConstants.appName,
             theme: AppTheme.lightTheme,
-            home: BlocProvider(
-              create: (_) => HomeBloc(),
-              child: const HomeView(),
-            ),
+            home: const HomeView(),
+            builder: (context, child) {
+              BlocProvider.of<HomeBloc>(context);
+              return child!;
+            },
           ),
         );
       },

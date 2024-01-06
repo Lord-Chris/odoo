@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:intl/intl.dart';
 
 import '../../../../core/_core.dart';
 import '../../../shared/constants/_constants.dart';
+import '../bloc/timer_details_bloc.dart';
 
 class DetailsTab extends StatelessWidget {
   const DetailsTab({
@@ -11,6 +14,7 @@ class DetailsTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final state = context.watch<TimerDetailsBloc>().state;
     return ListView(
       padding: REdgeInsets.all(16),
       children: [
@@ -42,7 +46,7 @@ class DetailsTab extends StatelessWidget {
                   ),
                   Spacing.horizSmall(),
                   Text(
-                    'Apexive: Content Planning',
+                    state.timeSheet.project,
                     style: context.tTheme.titleMedium?.copyWith(
                       color: context.cScheme.onSurface,
                     ),
@@ -60,7 +64,7 @@ class DetailsTab extends StatelessWidget {
               Row(
                 children: [
                   Text(
-                    '10/11/2023',
+                    DateFormat('dd/MM/yyyy').format(state.timeSheet.deadline),
                     style: context.tTheme.titleMedium?.copyWith(
                       color: context.cScheme.onSurface,
                     ),
@@ -78,7 +82,7 @@ class DetailsTab extends StatelessWidget {
               Row(
                 children: [
                   Text(
-                    'Ivan Zhuikov',
+                    state.timeSheet.assignee,
                     style: context.tTheme.titleMedium?.copyWith(
                       color: context.cScheme.onSurface,
                     ),
@@ -96,6 +100,7 @@ class DetailsTab extends StatelessWidget {
             borderRadius: BorderRadius.circular(16),
           ),
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Row(
                 children: [
@@ -111,7 +116,7 @@ class DetailsTab extends StatelessWidget {
               ),
               Spacing.vertTiny(),
               Text(
-                'Sync with Client, communicate, work on the new design with designer, new tasks preparation call with the front end',
+                state.timeSheet.description,
                 style: context.tTheme.bodyMedium?.copyWith(
                   color: context.cScheme.onSurface,
                 ),
