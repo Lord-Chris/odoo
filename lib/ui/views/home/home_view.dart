@@ -62,54 +62,9 @@ class HomeView extends HookWidget {
                   child: BlocBuilder<HomeBloc, HomeState>(
                     builder: (context, state) {
                       if (state.timers.isEmpty) {
-                        return Column(
-                          children: [
-                            const Expanded(
-                              child: EmptyStateWidget(
-                                imagePath: AppSvgAssets.noTimesheet,
-                                title: 'You don’t have any odoo timesheets',
-                                subtitle:
-                                    'Synchronize with odoo to get started',
-                              ),
-                            ),
-                            AppButton(
-                              label: 'Get Started',
-                              onTap: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (_) => BlocProvider(
-                                      create: (_) => CreateTimerBloc(),
-                                      child: const CreateTimerView(),
-                                    ),
-                                  ),
-                                );
-                              },
-                            ),
-                          ],
-                        );
+                        return const NonFilledStateWidget();
                       }
-                      return Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Spacing.vertSmall(),
-                          Text(
-                            'You have ${state.timerCount} Timer${state.timerCount == 1 ? '' : 's'}',
-                            style: context.tTheme.labelLarge?.copyWith(
-                              color: context.cScheme.onSurface,
-                            ),
-                          ),
-                          Expanded(
-                            child: ListView.builder(
-                              padding: REdgeInsets.symmetric(vertical: 16),
-                              itemCount: state.timers.length,
-                              itemBuilder: (context, index) {
-                                return TimeSheetWidget(index: index);
-                              },
-                            ),
-                          ),
-                        ],
-                      );
+                      return const FilledStateWidget();
                     },
                   ),
                 ),
@@ -118,6 +73,73 @@ class HomeView extends HookWidget {
           ),
         ),
       ),
+    );
+  }
+}
+
+class FilledStateWidget extends StatelessWidget {
+  const FilledStateWidget({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final state = context.watch<HomeBloc>().state;
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Spacing.vertSmall(),
+        Text(
+          'You have ${state.timerCount} Timer${state.timerCount == 1 ? '' : 's'}',
+          style: context.tTheme.labelLarge?.copyWith(
+            color: context.cScheme.onSurface,
+          ),
+        ),
+        Expanded(
+          child: ListView.builder(
+            padding: REdgeInsets.symmetric(vertical: 16),
+            itemCount: state.timers.length,
+            itemBuilder: (context, index) {
+              return TimeSheetWidget(index: index);
+            },
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class NonFilledStateWidget extends StatelessWidget {
+  const NonFilledStateWidget({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        const Expanded(
+          child: EmptyStateWidget(
+            imagePath: AppSvgAssets.noTimesheet,
+            title: 'You don’t have any odoo timesheets',
+            subtitle: 'Synchronize with odoo to get started',
+          ),
+        ),
+        AppButton(
+          label: 'Get Started',
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (_) => BlocProvider(
+                  create: (_) => CreateTimerBloc(),
+                  child: const CreateTimerView(),
+                ),
+              ),
+            );
+          },
+        ),
+      ],
     );
   }
 }

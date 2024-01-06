@@ -13,6 +13,7 @@ import '../../../shared/constants/_constants.dart';
 import '../../home/bloc/home_bloc.dart';
 import '../bloc/timer_details_bloc.dart';
 import '../bloc/timer_details_event.dart';
+import '../bloc/timer_details_state.dart';
 
 class TimeSheetsTab extends StatelessWidget {
   const TimeSheetsTab({
@@ -68,71 +69,9 @@ class CurrentRecord extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         children: [
-          Text(
-            DateFormat('EEEE').format(state.timeSheet.deadline),
-            style: context.tTheme.bodySmall?.copyWith(
-              color: context.cScheme.onSurface,
-            ),
-          ),
-          Spacing.vertTiny(),
-          Text(
-            DateFormat('dd.MM.yyyy').format(state.timeSheet.deadline),
-            style: context.tTheme.titleMedium?.copyWith(
-              color: context.cScheme.onSurface,
-            ),
-          ),
-          Spacing.vertTiny(),
-          Text(
-            'Start Time ${DateFormat('hh:mm').format(state.timeSheet.deadline)}',
-            style: context.tTheme.bodySmall?.copyWith(
-              color: context.cScheme.onSurface,
-            ),
-          ),
+          DeadlineInfo(deadline: state.timeSheet.deadline),
           Spacing.vertSmall(),
-          Row(
-            children: [
-              Expanded(
-                child: Text(
-                  state.timeSheet.time.parsedWithHr,
-                  style: context.tTheme.displaySmall?.copyWith(
-                    color: context.cScheme.onSurface,
-                  ),
-                ),
-              ),
-              IconButton.filled(
-                onPressed: () =>
-                    context.read<TimerDetailsBloc>().add(StopTapEvent()),
-                iconSize: 60.r,
-                padding: REdgeInsets.all(15),
-                style: IconButton.styleFrom(
-                  shape: const CircleBorder(),
-                  backgroundColor:
-                      context.cScheme.onSecondaryContainer.withOpacity(.16),
-                ),
-                icon: SvgPicture.asset(AppSvgAssets.stop),
-              ),
-              Spacing.horizSmall(),
-              IconButton.filled(
-                onPressed: () =>
-                    context.read<TimerDetailsBloc>().add(PausePlayTapEvent()),
-                iconSize: 48.r,
-                padding: REdgeInsets.all(15),
-                style: IconButton.styleFrom(
-                  shape: const CircleBorder(),
-                  backgroundColor: context.cScheme.onSecondaryContainer,
-                ),
-                icon: SvgPicture.asset(
-                  state.timeSheet.isPaused
-                      ? AppSvgAssets.play
-                      : AppSvgAssets.pause,
-                  colorFilter: ColorFilter.mode(
-                    context.cScheme.onPrimary,
-                    BlendMode.srcIn,
-                  ),
-                ),
-              ),
-            ],
-          ),
+          _buildTimerSection(state, context),
           Spacing.vertSmall(),
           const Divider(),
           Spacing.vertSmall(),
@@ -167,6 +106,50 @@ class CurrentRecord extends StatelessWidget {
       ),
     );
   }
+
+  Row _buildTimerSection(TimerDetailsState state, BuildContext context) {
+    return Row(
+      children: [
+        Expanded(
+          child: Text(
+            state.timeSheet.time.parsedWithHr,
+            style: context.tTheme.displaySmall?.copyWith(
+              color: context.cScheme.onSurface,
+            ),
+          ),
+        ),
+        IconButton.filled(
+          onPressed: () => context.read<TimerDetailsBloc>().add(StopTapEvent()),
+          iconSize: 60.r,
+          padding: REdgeInsets.all(15),
+          style: IconButton.styleFrom(
+            shape: const CircleBorder(),
+            backgroundColor:
+                context.cScheme.onSecondaryContainer.withOpacity(.16),
+          ),
+          icon: SvgPicture.asset(AppSvgAssets.stop),
+        ),
+        Spacing.horizSmall(),
+        IconButton.filled(
+          onPressed: () =>
+              context.read<TimerDetailsBloc>().add(PausePlayTapEvent()),
+          iconSize: 48.r,
+          padding: REdgeInsets.all(15),
+          style: IconButton.styleFrom(
+            shape: const CircleBorder(),
+            backgroundColor: context.cScheme.onSecondaryContainer,
+          ),
+          icon: SvgPicture.asset(
+            state.timeSheet.isPaused ? AppSvgAssets.play : AppSvgAssets.pause,
+            colorFilter: ColorFilter.mode(
+              context.cScheme.surface,
+              BlendMode.srcIn,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
 }
 
 class CompletedRecord extends StatelessWidget {
@@ -188,34 +171,7 @@ class CompletedRecord extends StatelessWidget {
         children: [
           SvgPicture.asset(AppSvgAssets.check),
           Spacing.horizSmall(),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text(
-                  DateFormat('EEEE').format(timeSheet.deadline),
-                  style: context.tTheme.bodySmall?.copyWith(
-                    color: context.cScheme.onSurface,
-                  ),
-                ),
-                Spacing.vertTiny(),
-                Text(
-                  DateFormat('dd.MM.yyyy').format(timeSheet.deadline),
-                  style: context.tTheme.titleMedium?.copyWith(
-                    color: context.cScheme.onSurface,
-                  ),
-                ),
-                Spacing.vertTiny(),
-                Text(
-                  'Start Time ${DateFormat('hh:mm').format(timeSheet.deadline)}',
-                  style: context.tTheme.bodySmall?.copyWith(
-                    color: context.cScheme.onSurface,
-                  ),
-                ),
-              ],
-            ),
-          ),
+          Expanded(child: DeadlineInfo(deadline: timeSheet.deadline)),
           Spacing.horizSmall(),
           Container(
             padding: REdgeInsets.fromLTRB(12, 6, 12, 6),
@@ -232,6 +188,45 @@ class CompletedRecord extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+}
+
+class DeadlineInfo extends StatelessWidget {
+  const DeadlineInfo({
+    super.key,
+    required this.deadline,
+  });
+
+  final DateTime deadline;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Text(
+          DateFormat('EEEE').format(deadline),
+          style: context.tTheme.bodySmall?.copyWith(
+            color: context.cScheme.onSurface,
+          ),
+        ),
+        Spacing.vertTiny(),
+        Text(
+          DateFormat('dd.MM.yyyy').format(deadline),
+          style: context.tTheme.titleMedium?.copyWith(
+            color: context.cScheme.onSurface,
+          ),
+        ),
+        Spacing.vertTiny(),
+        Text(
+          'Start Time ${DateFormat('hh:mm').format(deadline)}',
+          style: context.tTheme.bodySmall?.copyWith(
+            color: context.cScheme.onSurface,
+          ),
+        ),
+      ],
     );
   }
 }

@@ -27,68 +27,18 @@ class DetailsTab extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                'Project',
-                style: context.tTheme.bodySmall?.copyWith(
-                  color: context.cScheme.onSurface,
-                ),
-              ),
-              Spacing.vertTiny(),
-              Row(
-                children: [
-                  Container(
-                    width: 2,
-                    height: 24.r,
-                    decoration: BoxDecoration(
-                      color: AppColors.yellow,
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                  ),
-                  Spacing.horizSmall(),
-                  Text(
-                    state.timeSheet.project,
-                    style: context.tTheme.titleMedium?.copyWith(
-                      color: context.cScheme.onSurface,
-                    ),
-                  ),
-                ],
+              DetailItem(
+                title: 'Project',
+                body: state.timeSheet.project,
+                hasLine: true,
               ),
               Spacing.vertRegular(),
-              Text(
-                'Deadline',
-                style: context.tTheme.bodySmall?.copyWith(
-                  color: context.cScheme.onSurface,
-                ),
-              ),
-              Spacing.vertTiny(),
-              Row(
-                children: [
-                  Text(
-                    DateFormat('dd/MM/yyyy').format(state.timeSheet.deadline),
-                    style: context.tTheme.titleMedium?.copyWith(
-                      color: context.cScheme.onSurface,
-                    ),
-                  ),
-                ],
+              DetailItem(
+                title: 'Deadline',
+                body: DateFormat('dd/MM/yyyy').format(state.timeSheet.deadline),
               ),
               Spacing.vertRegular(),
-              Text(
-                'Assigned to',
-                style: context.tTheme.bodySmall?.copyWith(
-                  color: context.cScheme.onSurface,
-                ),
-              ),
-              Spacing.vertTiny(),
-              Row(
-                children: [
-                  Text(
-                    state.timeSheet.assignee,
-                    style: context.tTheme.titleMedium?.copyWith(
-                      color: context.cScheme.onSurface,
-                    ),
-                  ),
-                ],
-              ),
+              DetailItem(title: 'Assigned to', body: state.timeSheet.assignee),
             ],
           ),
         ),
@@ -123,6 +73,56 @@ class DetailsTab extends StatelessWidget {
               ),
             ],
           ),
+        ),
+      ],
+    );
+  }
+}
+
+class DetailItem extends StatelessWidget {
+  final String title;
+  final String body;
+  final bool hasLine;
+  const DetailItem({
+    Key? key,
+    required this.title,
+    required this.body,
+    this.hasLine = false,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Text(
+          title,
+          style: context.tTheme.bodySmall?.copyWith(
+            color: context.cScheme.onSurface,
+          ),
+        ),
+        Spacing.vertTiny(),
+        Row(
+          children: [
+            if (hasLine) ...[
+              Container(
+                width: 2,
+                height: 24.r,
+                decoration: BoxDecoration(
+                  color: AppColors.yellow,
+                  borderRadius: BorderRadius.circular(8),
+                ),
+              ),
+              Spacing.horizSmall(),
+            ],
+            Text(
+              body,
+              style: context.tTheme.titleMedium?.copyWith(
+                color: context.cScheme.onSurface,
+              ),
+            ),
+          ],
         ),
       ],
     );
