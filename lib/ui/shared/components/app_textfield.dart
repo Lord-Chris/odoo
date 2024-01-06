@@ -229,6 +229,7 @@ class AppDropdownField<T extends Object> extends HookWidget {
   Widget build(BuildContext context) {
     final focusNode = this.focusNode ?? useFocusNode();
     final isOpen = useState(false);
+    final controller = useTextEditingController();
     return FormField<T?>(
       validator: validator,
       builder: (state) {
@@ -248,23 +249,10 @@ class AppDropdownField<T extends Object> extends HookWidget {
                         )
                       : null,
                 ),
-                child: DropdownButtonFormField<T>(
-                  dropdownColor: context.cScheme.outline.withOpacity(.16),
-                  borderRadius: BorderRadius.circular(10),
-                  alignment: Alignment.bottomCenter,
-                  elevation: 0,
-                  items: const [],
-                  isExpanded: true,
-                  onChanged: (val) {
-                    state.didChange(val);
-                    if (onChanged != null) onChanged!(val);
-                  },
-                  value: value,
+                child: TextFormField(
+                  readOnly: true,
+                  controller: controller,
                   focusNode: focusNode,
-                  icon: const Icon(
-                    Icons.arrow_drop_down_sharp,
-                    size: 0,
-                  ),
                   style: context.tTheme.bodyLarge?.copyWith(
                     color: context.cScheme.onSurface,
                   ),
@@ -272,7 +260,7 @@ class AppDropdownField<T extends Object> extends HookWidget {
                     hintText: hint,
                     labelText: label,
                     prefixIcon: prefix,
-                    enabled: enabled,
+                    enabled: false,
                     suffixIcon: SizedBox(
                       width: 50.w,
                       child: Align(
@@ -307,6 +295,7 @@ class AppDropdownField<T extends Object> extends HookWidget {
                     return GestureDetector(
                       onTap: () {
                         state.didChange(item);
+                        controller.text = item.toString();
                         if (onChanged != null) onChanged!(item);
                         isOpen.value = !isOpen.value;
                       },

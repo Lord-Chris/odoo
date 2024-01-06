@@ -8,6 +8,7 @@ class AppSvgAssets {
   static const bag = '$_prefix/bag.svg';
   static const clock = '$_prefix/clock.svg';
   static const pause = '$_prefix/pause.svg';
+  static const play = '$_prefix/play.svg';
   static const arrowDown = '$_prefix/arrow_down.svg';
   static const check = '$_prefix/check.svg';
   static const pencil = '$_prefix/pencil.svg';

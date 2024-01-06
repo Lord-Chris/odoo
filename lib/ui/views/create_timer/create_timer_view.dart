@@ -1,18 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../core/extensions/context_extenstion.dart';
 import '../../shared/components/_components.dart';
-import '../../shared/constants/app_colors.dart';
-import '../../shared/constants/spacing.dart';
-import '../timer_details/timer_details_view.dart';
+import '../../shared/constants/_constants.dart';
+import '../home/bloc/home_bloc.dart';
+import '../home/bloc/home_event.dart';
+import 'bloc/create_timer_bloc.dart';
+import 'bloc/create_timer_event.dart';
+import 'bloc/create_timer_state.dart';
 
 class CreateTimerView extends StatelessWidget {
   const CreateTimerView({super.key});
 
   @override
   Widget build(BuildContext context) {
-    String val = '';
     return BaseScaffold(
       body: Column(
         children: [
@@ -27,64 +30,74 @@ class CreateTimerView extends StatelessWidget {
             ),
           ),
           Expanded(
-            child: Padding(
-              padding: REdgeInsets.all(16),
-              child: Column(
-                children: [
-                  Expanded(
-                    child: ListView(
-                      padding: EdgeInsets.zero,
-                      children: [
-                        AppDropdownField<String>(
-                          items: const ['', 'a'],
-                          value: null,
-                          label: 'Project',
-                          onChanged: (p0) {},
-                        ),
-                        Spacing.vertRegular(),
-                        AppDropdownField<String>(
-                          items: const ['', 's'],
-                          value: val,
-                          label: 'Task',
-                          hint: 'Task',
-                          onChanged: (p0) {
-                            val = p0!;
-                          },
-                        ),
-                        Spacing.vertRegular(),
-                        const AppTextField(
-                          label: 'Description',
-                        ),
-                        Spacing.vertRegular(),
-                        Row(
+            child: BlocBuilder<CreateTimerBloc, CreateTimerState>(
+              builder: (context, state) {
+                return Padding(
+                  padding: REdgeInsets.all(16),
+                  child: Column(
+                    children: [
+                      Expanded(
+                        child: ListView(
+                          padding: EdgeInsets.zero,
                           children: [
-                            Checkbox(
-                              value: true,
-                              onChanged: (value) {},
+                            AppDropdownField<String>(
+                              items: AppConstants.projectNames,
+                              value: state.project,
+                              label: 'Project',
+                              onChanged: (val) => context
+                                  .read<CreateTimerBloc>()
+                                  .add(ProjectChangedEvent(val)),
                             ),
-                            Spacing.horizSmall(),
-                            Text(
-                              'Make Favorite',
-                              style: context.tTheme.bodyLarge?.copyWith(
-                                color: context.cScheme.onSurface,
-                              ),
-                            )
+                            Spacing.vertRegular(),
+                            AppDropdownField<String>(
+                              items: AppConstants.taskIDs,
+                              value: state.task,
+                              label: 'Task',
+                              onChanged: (val) => context
+                                  .read<CreateTimerBloc>()
+                                  .add(TaskChangedEvent(val)),
+                            ),
+                            Spacing.vertRegular(),
+                            AppTextField(
+                              label: 'Description',
+                              onChanged: (val) => context
+                                  .read<CreateTimerBloc>()
+                                  .add(DescChangedEvent(val)),
+                            ),
+                            Spacing.vertRegular(),
+                            Row(
+                              children: [
+                                Checkbox(
+                                  value: state.isFav,
+                                  onChanged: (val) => context
+                                      .read<CreateTimerBloc>()
+                                      .add(IsFavChangedEvent(val)),
+                                ),
+                                Spacing.horizSmall(),
+                                Text(
+                                  'Make Favorite',
+                                  style: context.tTheme.bodyLarge?.copyWith(
+                                    color: context.cScheme.onSurface,
+                                  ),
+                                )
+                              ],
+                            ),
                           ],
                         ),
-                      ],
-                    ),
+                      ),
+                      AppButton(
+                        label: 'Create Timer',
+                        onTap: () {
+                          context
+                              .read<HomeBloc>()
+                              .add(AddTimerEvent(state.toTimerModel()));
+                          Navigator.pop(context);
+                        },
+                      ),
+                    ],
                   ),
-                  AppButton(
-                    label: 'Create Timer',
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (_) => const TimerDetailsView()));
-                    },
-                  ),
-                ],
-              ),
+                );
+              },
             ),
           ),
         ],
