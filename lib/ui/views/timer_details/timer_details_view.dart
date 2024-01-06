@@ -10,7 +10,6 @@ import '../../shared/constants/_constants.dart';
 import '../home/bloc/home_bloc.dart';
 import '../home/bloc/home_event.dart';
 import 'bloc/timer_details_bloc.dart';
-import 'bloc/timer_details_state.dart';
 import 'widgets/details_tab.dart';
 import 'widgets/timesheets_tab.dart';
 
@@ -23,8 +22,9 @@ class TimerDetailsView extends HookWidget {
     final state = bloc.state;
     final controller = useTabController(initialLength: 2);
     return BaseScaffold(
-      body: BlocListener<TimerDetailsBloc, TimerDetailsState>(
-        listener: (__, state) {
+      body: PopScope(
+        canPop: true,
+        onPopInvoked: (__) {
           context.read<HomeBloc>().add(UpdateTimeSheetEvent(state.timeSheet));
         },
         child: Column(

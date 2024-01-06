@@ -13,12 +13,18 @@ class UpdateTimeSheetEvent extends HomeEvent {
 }
 
 class StartTimerEvent extends HomeEvent {
-  TimeSheetModel timer;
+  final TimeSheetModel timer;
   StartTimerEvent(this.timer);
 }
 
 class EndTimerEvent extends HomeEvent {
-  TimeSheetModel timer;
+  final TimeSheetModel timer;
   final Duration duration;
   EndTimerEvent(this.timer, this.duration);
+}
+
+class UpdateTimeEvent extends HomeEvent {
+  final int timesheetIndex;
+  final Duration duration;
+  UpdateTimeEvent(this.timesheetIndex, this.duration);
 }

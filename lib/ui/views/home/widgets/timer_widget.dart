@@ -15,9 +15,9 @@ import '../../timer_details/timer_details_view.dart';
 import '../bloc/home_bloc.dart';
 import '../bloc/home_event.dart';
 
-class TimerWidget extends StatelessWidget {
+class TimeSheetWidget extends StatelessWidget {
   final int index;
-  const TimerWidget({
+  const TimeSheetWidget({
     Key? key,
     required this.index,
   }) : super(key: key);
@@ -131,23 +131,15 @@ class TimeButton extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final timesheet = context.watch<HomeBloc>().state.timers[index];
-    final time = useState(timesheet.time);
 
     useEffect(() {
       final timer = Timer.periodic(const Duration(seconds: 1), (timer) {
-        if (time.value.isNegative) {
-          time.value = Duration.zero;
-          context.read<HomeBloc>().add(EndTimerEvent(timesheet, time.value));
-          return timer.cancel();
-        }
-        if (!timesheet.isPaused) {
-          time.value = Duration(seconds: time.value.inSeconds - 1);
-        }
+        context.read<HomeBloc>().add(UpdateTimeEvent(index, Duration.zero));
       });
       return () => timer.cancel();
-    }, [timesheet.isPaused]);
+    }, [...timesheet.props]);
     return AppButton(
-      label: time.value.parsed,
+      label: timesheet.time.parsed,
       isCollapsed: true,
       borderRadius: 64,
       buttonColor: context.cScheme.primaryContainer
@@ -168,7 +160,9 @@ class TimeButton extends HookWidget {
         if (timesheet.isPaused) {
           context.read<HomeBloc>().add(StartTimerEvent(timesheet));
         } else {
-          context.read<HomeBloc>().add(EndTimerEvent(timesheet, time.value));
+          context
+              .read<HomeBloc>()
+              .add(EndTimerEvent(timesheet, timesheet.time));
         }
       },
     );

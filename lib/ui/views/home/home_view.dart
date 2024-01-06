@@ -90,7 +90,7 @@ class HomeView extends HookWidget {
                             padding: REdgeInsets.symmetric(vertical: 16),
                             itemCount: state.timers.length,
                             itemBuilder: (context, index) {
-                              return TimerWidget(index: index);
+                              return TimeSheetWidget(index: index);
                             },
                           ),
                         ),

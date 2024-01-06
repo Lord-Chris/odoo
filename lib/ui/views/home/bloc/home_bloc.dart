@@ -13,6 +13,7 @@ class HomeBloc extends HydratedBloc<HomeEvent, HomeState> {
     on<UpdateTimeSheetEvent>(_onUpdateTimeSheetEvent);
     on<StartTimerEvent>(_onStartTimerEvent);
     on<EndTimerEvent>(_onEndTimerEvent);
+    on<UpdateTimeEvent>(_onUpdateTimeEvent);
   }
 
   final _log = Logger();
@@ -69,5 +70,20 @@ class HomeBloc extends HydratedBloc<HomeEvent, HomeState> {
     } catch (e) {
       _log.e(e);
     }
+  }
+
+  FutureOr<void> _onUpdateTimeEvent(
+      UpdateTimeEvent event, Emitter<HomeState> emit) async {
+    final timeSheets = state.timers;
+    var timeSheet = timeSheets[event.timesheetIndex];
+    if (timeSheet.time.isNegative || timeSheet.time.inSeconds == 0) {
+      timeSheet = timeSheet.copyWith(time: Duration.zero);
+    } else if (!timeSheet.isPaused) {
+      timeSheet = timeSheet.copyWith(
+        time: Duration(seconds: timeSheet.time.inSeconds - 1),
+      );
+    }
+    timeSheets[event.timesheetIndex] = timeSheet;
+    emit(state.copyWith(timers: timeSheets));
   }
 }
